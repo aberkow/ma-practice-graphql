@@ -8,8 +8,18 @@ type User {
 
 type Mutation {
   createUser(name: String! email: String!): User
+  updateUser(id: ID! name: String email: String!): User!
+  deleteUser(id: ID!): User
+  createTechnique(name: String! description: String rank: Rank): Technique
+  updateTechnique(id: ID! name: String description: String rank: Rank): Technique!
+  deleteTechnique(id: ID!): Technique
 }
 
 type Query {
   users: [User]!
+  techniques: [Technique]!
+  combinations: [Combination]!
+  user(where: UserWhereUniqueInput!): User
+  technique(where: TechniqueWhereUniqueInput!): Technique
+  combination(where: CombinationWhereUniqueInput!): Combination
 }
