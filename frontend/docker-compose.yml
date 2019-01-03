@@ -1,0 +1,17 @@
+version: '3'
+services:
+  next:
+    image: uconn/nextjs
+    ports:
+      - "80:3000"
+    volumes:
+      - ./Components:/project/Components
+      - ./pages:/project/pages
+    networks: 
+      - client
+    restart: always
+
+
+networks:
+  client:
+    driver: bridge

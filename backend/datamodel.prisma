@@ -1,0 +1,47 @@
+enum Rank {
+  NONE
+  WHITE
+  ADV_WHITE
+  YELLOW
+  ADV_YELLOW
+  ORANGE
+  ADV_ORANGE
+  GREEN
+  ADV_GREEN
+  BLUE
+  ADV_BLUE
+  PURPLE
+  ADV_PURPLE
+  BROWN
+  ADV_BROWN
+}
+
+type User {
+  id: ID! @unique
+  name: String!
+  email: String! @unique
+  combinations: [Combination]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Technique {
+  id: ID! @unique
+  name: String! @unique
+  description: String
+  rank: Rank!
+  combinations: [Combination]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Combination {
+  id: ID! @unique
+  name: String
+  numTechniques: Int @default(value: "1")
+  techniques: [Technique!]!
+  maxRank: Rank! @default(value: NONE)
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
