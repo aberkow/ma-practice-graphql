@@ -30,7 +30,7 @@ const Mutation = {
       data: {
         name: args.name,
         description: args.description,
-        rank: args.rank
+        rank: args.rank,
       }
     }, info)
     
@@ -59,6 +59,8 @@ const Mutation = {
         name: args.name,
         numTechniques: args.numTechniques,
         maxRank: args.maxRank,
+        // the connect property can be found in prisma.graphql
+        // it's used to associate the IDs of techniques with the combination being created.
         techniques: {
           connect: [...args.techniques]
         }
