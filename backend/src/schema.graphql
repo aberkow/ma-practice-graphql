@@ -6,6 +6,10 @@ type User {
   email: String!
 }
 
+input TechniqueInput {
+  id: ID!
+}
+
 type Mutation {
   createUser(name: String! email: String!): User
   updateUser(id: ID! name: String email: String!): User!
@@ -13,6 +17,9 @@ type Mutation {
   createTechnique(name: String! description: String rank: Rank): Technique
   updateTechnique(id: ID! name: String description: String rank: Rank): Technique!
   deleteTechnique(id: ID!): Technique
+  createCombination(name: String numTechniques: Int maxRank: Rank techniques: [TechniqueInput!]!): Combination
+  updateCombination(id: ID! name: String numTechniques: Int maxRank: Rank techniques: [TechniqueInput]): Combination
+  deleteCombination(id: ID!): Combination
 }
 
 type Query {

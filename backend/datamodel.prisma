@@ -30,7 +30,7 @@ type Technique {
   name: String! @unique
   description: String
   rank: Rank!
-  combinations: [Combination]!
+  # combinations: [Combination]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
