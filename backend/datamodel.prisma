@@ -1,3 +1,8 @@
+enum Permission {
+  USER
+  ADMIN
+}
+
 enum Rank {
   NONE
   WHITE
@@ -20,7 +25,7 @@ type User {
   id: ID! @unique
   name: String!
   email: String! @unique
-  combinations: [Combination]!
+  combinations: [Combination]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
