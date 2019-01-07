@@ -7,14 +7,15 @@ type User {
   combinations: [Combination]
 }
 
-# input TechniqueInput {
-#   id: ID!
-# }
+input TechniqueInput {
+  id: ID!
+}
 
 input CombinationTechniqueInput {
-  # technique: TechniqueInput
-  technique: ID!
-  index: Int
+  # index: Int
+  technique: TechniqueInput
+  # technique: ID!
+  # technique: Technique
 }
 
 
@@ -35,6 +36,7 @@ type Mutation {
     name: String
     numTechniques: Int
     maxRank: Rank
+    # techniques: [CombinationTechniqueInput]
     techniques: [CombinationTechniqueInput]
   ): Combination
 

@@ -40,8 +40,8 @@ type Technique {
 }
 
 type CombinationTechnique {
+  # index: Int!
   technique: Technique!
-  index: Int!
 }
 
 type Combination {

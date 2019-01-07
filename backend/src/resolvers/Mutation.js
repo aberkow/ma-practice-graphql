@@ -54,75 +54,146 @@ const Mutation = {
     }, info)
   },
   createCombination: async (parent, args, ctx, info) => {
-    console.log(args.techniques)
+    console.log(args.techniques, 'args.techniques')
 
-    const test = args.techniques.map(t => {
+    const awaitTechniques = async (arr, ctx) => {
+      const results = await Promise.all(arr.map(async t => {
+        const foundTechnique = await ctx.db.query.technique({
+          where: { id: t.technique.id }
+        })
+        return foundTechnique
+      }))
+      return results
+    }
+
+    const data = await awaitTechniques(args.techniques, ctx).then((res) => {
       return {
-        create: {
-          index: t.index,
-          technique: {
-            connect: { 
-              id: t.technique 
-            }
-          }
-        }
-      }
-    });
-
-    console.log(JSON.stringify(test), 'test')
-
-    const combination = await ctx.db.mutation.createCombination({
-      data: {
         name: args.name,
         numTechniques: args.numTechniques,
         maxRank: args.maxRank,
-        // techniques: test
-        techniques: args.techniques
+        techniques: res
       }
-    }, info)
+    })
 
-    console.log(combination, 'combination')
+    console.log(data, 'data')
+
+    const combination = await ctx.db.mutation.createCombination({
+      data
+    })
+
+    console.log(combination);
 
     return combination
+
+    // const awaitCombination = async (arr, ctx) => {
+    //   return await ctx.db.mutation.createCombination({
+    //     data: {
+    //       name: args.name,
+    //       numTechniques: args.numTechniques,
+    //       maxRank: args.maxRank,
+    //       techniques: arr
+    //     }
+    //   })
+    // }
+
+    // const awaitedCombo = awaitCombination(techniques, ctx);
+
+
+    // const combination = techniques(args.techniques, ctx).then( (res) => {
+    //   return ctx.db.mutation.createCombination({
+    //     data: {
+    //       name: args.name,
+    //       numTechniques: args.numTechniques,
+    //       maxRank: args.maxRank,
+    //       techniques: res
+    //     }
+    //   })
+
+    // });
+
+    // console.log(combination, 'something')
+
+    return something;
+
+
+
+
+    // const combination = await ctx.db.mutation.createCombination({
+    //   data: {
+    //     name: args.name,
+    //     numTechniques: args.numTechniques,
+    //     maxRank: args.maxRank,
+    //     techniques: {
+    //       create: test
+    //     }
+    //   }
+    // })
+
+
+    // console.log(combination, 'combination')
+    // return combination;
+
+
+
+    // const test = args.techniques.map(t => {
+    //   console.log(t)
+    //   return {
+    //     index: t.index,
+
+    //     // technique: await ctx.db.query.technique({
+    //     //   where: { id: t.technique.id }
+    //     // })
+    //   }
+    // })
+
+    /**
+     * an array of objects where each one is
+     * 
+     * {
+     *  id: INT
+     *  technique: {
+     *    connect: { id: ID }
+     *  }
+     * }
+     * 
+     */
+    // console.log(JSON.stringify(test), 'test')
+
+
   },
   // createCombination: async (parent, args, ctx, info) => {
+  //   
 
-  //   const techniques = args.techniques.map(t => {
+  //   const test = args.techniques.map(t => {
   //     return {
-  //       create: t.technique,
-  //       index: t.index
+  //       create: {
+  //         index: t.index,
+  //         technique: {
+  //           connect: { 
+  //             id: t.technique 
+  //           }
+  //         }
+  //       }
   //     }
-  //   })
+  //   });
 
-  //   console.log(techniques, 'techniques')
+  //   console.log(JSON.stringify(test), 'test')
 
   //   const combination = await ctx.db.mutation.createCombination({
   //     data: {
   //       name: args.name,
   //       numTechniques: args.numTechniques,
   //       maxRank: args.maxRank,
-  //       // the connect property can be found in prisma.graphql
-  //       // it's used to associate the IDs of techniques with the combination being created.
-  //       techniques
-  //       // techniques: {
-  //       //   connect: ,
-  //       //   index: [args.techniques.index]
-  //       //   // create: [
-  //       //     // { 
-  //       //     //   index: [...args.techniques.index], 
-  //       //     //   technique: [...techniqueConnection] 
-  //       //     // }
-  //       //   // ]
-  //       //   // connect: [...args.techniques.technique.id],
-  //       //   // connect: [...techniqueConnection],
-  //       //   // index: [...indexArray]
-  //       //   // index: [...args.techniques.index]
-  //       // }
+  //       // techniques: test
+  //       techniques: args.techniques
   //     }
-  //   }, info);
+  //   }, info)
 
-  //   return combination;
+  //   console.log(combination, 'combination')
+
+  //   return combination
   // },
+
   // updateCombination: async (parent, args, ctx, info) => {
   //   const updates = {...args};
 
