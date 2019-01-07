@@ -39,11 +39,17 @@ type Technique {
   updatedAt: DateTime!
 }
 
+type CombinationTechnique {
+  technique: Technique!
+  index: Int!
+}
+
 type Combination {
   id: ID! @unique
   name: String! @default(value: "Untitled")
   numTechniques: Int @default(value: "1")
-  techniques: [Technique!]!
+  # techniques: [Technique!]!
+  techniques: [CombinationTechnique!]!
   maxRank: Rank! @default(value: "NONE")
   createdAt: DateTime!
   updatedAt: DateTime!

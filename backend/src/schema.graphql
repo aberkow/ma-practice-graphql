@@ -7,11 +7,20 @@ type User {
   combinations: [Combination]
 }
 
-input TechniqueInput {
-  id: ID!
+# input TechniqueInput {
+#   id: ID!
+# }
+
+input CombinationTechniqueInput {
+  # technique: TechniqueInput
+  technique: ID!
+  index: Int
 }
 
+
 input CombinationInput {
+  # technique: Technique!
+  # index: Int!
   id: ID!
 }
 
@@ -22,8 +31,25 @@ type Mutation {
   createTechnique(name: String! description: String rank: Rank): Technique
   updateTechnique(id: ID! name: String description: String rank: Rank): Technique!
   deleteTechnique(id: ID!): Technique
-  createCombination(name: String numTechniques: Int maxRank: Rank techniques: [TechniqueInput!]!): Combination
-  updateCombination(id: ID! name: String numTechniques: Int maxRank: Rank techniques: [TechniqueInput]): Combination
+  createCombination(
+    name: String
+    numTechniques: Int
+    maxRank: Rank
+    techniques: [CombinationTechniqueInput]
+  ): Combination
+
+
+
+  # createCombination(
+  #   name: String
+  #   numTechniques: Int
+  #   maxRank: Rank
+  #   techniques: [CombinationTechniqueInput]
+  #   # techniques: [CombinationTechniqueCreateManyInput]
+  # ): Combination
+
+
+  # updateCombination(id: ID! name: String numTechniques: Int maxRank: Rank techniques: [TechniqueInput]): Combination
   deleteCombination(id: ID!): Combination
 }
 

@@ -54,33 +54,87 @@ const Mutation = {
     }, info)
   },
   createCombination: async (parent, args, ctx, info) => {
+    console.log(args.techniques)
+
+    const test = args.techniques.map(t => {
+      return {
+        create: {
+          index: t.index,
+          technique: {
+            connect: { 
+              id: t.technique 
+            }
+          }
+        }
+      }
+    });
+
+    console.log(JSON.stringify(test), 'test')
+
     const combination = await ctx.db.mutation.createCombination({
       data: {
         name: args.name,
         numTechniques: args.numTechniques,
         maxRank: args.maxRank,
-        // the connect property can be found in prisma.graphql
-        // it's used to associate the IDs of techniques with the combination being created.
-        techniques: {
-          connect: [...args.techniques]
-        }
+        // techniques: test
+        techniques: args.techniques
       }
-    }, info);
-
-    return combination;
-  },
-  updateCombination: async (parent, args, ctx, info) => {
-    const updates = {...args};
-
-    delete updates.id;
-
-    const updatedCombination = await ctx.db.mutation.updateCombination({
-      data: updates,
-      where: { id: args.id }
     }, info)
 
-    return updatedCombination;
+    console.log(combination, 'combination')
+
+    return combination
   },
+  // createCombination: async (parent, args, ctx, info) => {
+
+  //   const techniques = args.techniques.map(t => {
+  //     return {
+  //       create: t.technique,
+  //       index: t.index
+  //     }
+  //   })
+
+  //   console.log(techniques, 'techniques')
+
+  //   const combination = await ctx.db.mutation.createCombination({
+  //     data: {
+  //       name: args.name,
+  //       numTechniques: args.numTechniques,
+  //       maxRank: args.maxRank,
+  //       // the connect property can be found in prisma.graphql
+  //       // it's used to associate the IDs of techniques with the combination being created.
+  //       techniques
+  //       // techniques: {
+  //       //   connect: ,
+  //       //   index: [args.techniques.index]
+  //       //   // create: [
+  //       //     // { 
+  //       //     //   index: [...args.techniques.index], 
+  //       //     //   technique: [...techniqueConnection] 
+  //       //     // }
+  //       //   // ]
+  //       //   // connect: [...args.techniques.technique.id],
+  //       //   // connect: [...techniqueConnection],
+  //       //   // index: [...indexArray]
+  //       //   // index: [...args.techniques.index]
+  //       // }
+  //     }
+  //   }, info);
+
+  //   return combination;
+  // },
+  // updateCombination: async (parent, args, ctx, info) => {
+  //   const updates = {...args};
+
+  //   delete updates.id;
+
+  //   const updatedCombination = await ctx.db.mutation.updateCombination({
+  //     data: updates,
+  //     where: { id: args.id }
+  //   }, info)
+
+  //   return updatedCombination;
+  // },
   deleteCombination: async (parent, args, ctx, info) => {
     const deleteCombination = await ctx.db.mutation.deleteCombination({
       where: { id: args.id }
