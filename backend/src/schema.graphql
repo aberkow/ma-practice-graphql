@@ -6,21 +6,18 @@ type User {
   email: String!
   combinations: [Combination]
 }
+input CombinationInput {
+  id: ID!
+}
 
+# the ID of the technique to `connect` with in the mutation
 input TechniqueInput {
   id: ID!
 }
 
 input CombinationTechniqueInput {
-  # index: Int
+  index: Int
   technique: TechniqueInput
-}
-
-
-input CombinationInput {
-  # technique: Technique!
-  # index: Int!
-  id: ID!
 }
 
 type Mutation {
@@ -35,21 +32,8 @@ type Mutation {
     numTechniques: Int
     maxRank: Rank
     techniques: [CombinationTechniqueInput]
-    # techniques: [TechniqueInput]
   ): Combination
 
-
-
-  # createCombination(
-  #   name: String
-  #   numTechniques: Int
-  #   maxRank: Rank
-  #   techniques: [CombinationTechniqueInput]
-  #   # techniques: [CombinationTechniqueCreateManyInput]
-  # ): Combination
-
-
-  # updateCombination(id: ID! name: String numTechniques: Int maxRank: Rank techniques: [TechniqueInput]): Combination
   deleteCombination(id: ID!): Combination
 }
 
