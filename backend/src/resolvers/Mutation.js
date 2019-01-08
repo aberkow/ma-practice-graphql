@@ -54,36 +54,76 @@ const Mutation = {
     }, info)
   },
   createCombination: async (parent, args, ctx, info) => {
-    console.log(args.techniques, 'args.techniques')
+    console.log(args.techniques)
 
-    const awaitTechniques = async (arr, ctx) => {
-      const results = await Promise.all(arr.map(async t => {
-        const foundTechnique = await ctx.db.query.technique({
-          where: { id: t.technique.id }
-        })
-        return foundTechnique
-      }))
-      return results
-    }
-
-    const data = await awaitTechniques(args.techniques, ctx).then((res) => {
-      return {
+    const combination = await ctx.db.mutation.createCombination({
+      data: {
         name: args.name,
         numTechniques: args.numTechniques,
         maxRank: args.maxRank,
-        techniques: res
+        techniques: {
+          create: [...args.techniques]
+        }
       }
-    })
+    }, info)
 
-    console.log(data, 'data')
-
-    const combination = await ctx.db.mutation.createCombination({
-      data
-    })
-
-    console.log(combination);
-
+    console.log(combination, 'combination')
     return combination
+    // const combination = await ctx.db.mutation.createCombination({
+    //   data: {
+    //     name: args.name,
+    //     numTechniques: args.numTechniques,
+    //     maxRank: args.maxRank,
+    //     techniques: {
+    //       connect: [...args.techniques]
+    //     }
+    //   }
+    // }, info)
+
+    // console.log(combination, 'combination')
+
+    // return combination;
+
+    // const awaitTechniques = async (arr, ctx) => {
+    //   const results = await Promise.all(arr.map(async t => {
+    //     const foundTechnique = await ctx.db.query.technique({
+    //       where: { id: t.id }
+    //     })
+    //     return foundTechnique
+    //   }))
+    //   return results
+    // }
+
+    // const data = await awaitTechniques(args.techniques, ctx).then((res) => {
+    //   console.log(res, 'res')
+    //   return {
+    //     name: args.name,
+    //     numTechniques: args.numTechniques,
+    //     maxRank: args.maxRank,
+    //     techniques: {
+    //       connect: res
+    //     }
+    //     // techniques: TechniqueCreateManyInput {
+    //     //   create: [TechniqueCreateInput!]
+    //     //    connect: [TechniqueWhereUniqueInput!]
+    //     // }
+    //     //   TechniqueWhereUniqueInput {
+    //       //   id: ID
+    //       //   name: String
+    //     // }
+    //     // techniques: res
+    //   }
+    // })
+
+    // console.log(JSON.stringify(data), 'data')
+
+    // const combination = await ctx.db.mutation.createCombination({
+    //   data
+    // }, info)
+
+    // console.log(combination, 'combination');
+
+    // return combination
 
     // const awaitCombination = async (arr, ctx) => {
     //   return await ctx.db.mutation.createCombination({
@@ -113,7 +153,6 @@ const Mutation = {
 
     // console.log(combination, 'something')
 
-    return something;
 
 
 

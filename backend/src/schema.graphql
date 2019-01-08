@@ -14,8 +14,6 @@ input TechniqueInput {
 input CombinationTechniqueInput {
   # index: Int
   technique: TechniqueInput
-  # technique: ID!
-  # technique: Technique
 }
 
 
@@ -36,8 +34,8 @@ type Mutation {
     name: String
     numTechniques: Int
     maxRank: Rank
-    # techniques: [CombinationTechniqueInput]
     techniques: [CombinationTechniqueInput]
+    # techniques: [TechniqueInput]
   ): Combination
 
 
