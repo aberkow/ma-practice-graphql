@@ -1,11 +1,17 @@
 # import * from './generated/prisma.graphql'
 
+# this file represents _what_ actions (queries/mutations) the prisma server application _can_ do.
+# it does not define _how_ the server will do perform those actions
+# those behaviors are defined by Query.js and Mutation.js
+
+
 type User {
   id: ID!
   name: String!
   email: String!
   combinations: [Combination]
 }
+
 input CombinationInput {
   id: ID!
 }
@@ -16,7 +22,6 @@ input TechniqueInput {
 }
 
 input CombinationTechniqueInput {
-  index: Int
   technique: TechniqueInput
 }
 
@@ -31,7 +36,7 @@ type Mutation {
     name: String
     numTechniques: Int
     maxRank: Rank
-    techniques: [CombinationTechniqueInput]
+    combinationTechniques: [CombinationTechniqueInput]
   ): Combination
 
   deleteCombination(id: ID!): Combination

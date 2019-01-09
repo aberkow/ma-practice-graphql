@@ -1,8 +1,14 @@
+# this file represents the 'shape' of types available to the db application.
+# it does not represent the behavior of the server application
+# the generated prisma.graphql file exposes possible behaviors available to the schema.graphql file
+
+# User permissions
 enum Permission {
   USER
   ADMIN
 }
 
+# Skill ranks for techniques
 enum Rank {
   NONE
   WHITE
@@ -30,6 +36,8 @@ type User {
   updatedAt: DateTime!
 }
 
+# an individual technique w/o reference to a combination
+# names must be unique in order to prevent having overlap
 type Technique {
   id: ID! @unique
   name: String! @unique
@@ -39,20 +47,24 @@ type Technique {
   updatedAt: DateTime!
 }
 
+# will be the connection between a Technique and a Combination
+# new CombinationTechnique objects will be created for each combination
+# is there a way to re-use them?
 type CombinationTechnique {
   id: ID! @unique
-  index: Int
   technique: Technique
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
+# A collection of techniques defined by a single CombinationTechnique
+# IDs are passed to the technique property to `connect`/define the appropriate technique to use
 type Combination {
   id: ID! @unique
   name: String! @default(value: "Untitled")
   numTechniques: Int @default(value: "1")
   maxRank: Rank! @default(value: "NONE")
-  techniques: [CombinationTechnique!]!
+  combinationTechniques: [CombinationTechnique!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }

@@ -56,10 +56,9 @@ const Mutation = {
   createCombination: async (parent, args, ctx, info) => {
 
     // map args.techniques to the shape required by createCombination
-    const techniqueMap = (techniques) => {
+    const combinationTechniqueMap = (techniques) => {
       return techniques.map((t) => {
         return {
-          index: t.index,
           technique: {
             connect: {
               id: t.technique.id
@@ -69,7 +68,7 @@ const Mutation = {
       })
     }
 
-    const mappedTechinques = techniqueMap(args.techniques)
+    const mappedTechinques = combinationTechniqueMap(args.techniques)
     
     const combination = await ctx.db.mutation.createCombination({
       data: {
@@ -77,7 +76,7 @@ const Mutation = {
         numTechniques: args.numTechniques,
         maxRank: args.maxRank,
         // populate the array of techniques
-        techniques: {
+        combinationTechniques: {
           create: mappedTechinques 
         }
       }
