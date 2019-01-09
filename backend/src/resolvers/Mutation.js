@@ -54,33 +54,51 @@ const Mutation = {
     }, info)
   },
   createCombination: async (parent, args, ctx, info) => {
+
+    // map args.techniques to the shape required by createCombination
+    const techniqueMap = (techniques) => {
+      return techniques.map((t) => {
+        return {
+          index: t.index,
+          technique: {
+            connect: {
+              id: t.technique.id
+            }
+          }
+        }
+      })
+    }
+
+    const mappedTechinques = techniqueMap(args.techniques)
+    
     const combination = await ctx.db.mutation.createCombination({
       data: {
         name: args.name,
         numTechniques: args.numTechniques,
         maxRank: args.maxRank,
-        // the connect property can be found in prisma.graphql
-        // it's used to associate the IDs of techniques with the combination being created.
+        // populate the array of techniques
         techniques: {
-          connect: [...args.techniques]
+          create: mappedTechinques 
         }
       }
     }, info);
 
     return combination;
+
   },
-  updateCombination: async (parent, args, ctx, info) => {
-    const updates = {...args};
+  
+  // updateCombination: async (parent, args, ctx, info) => {
+  //   const updates = {...args};
 
-    delete updates.id;
+  //   delete updates.id;
 
-    const updatedCombination = await ctx.db.mutation.updateCombination({
-      data: updates,
-      where: { id: args.id }
-    }, info)
+  //   const updatedCombination = await ctx.db.mutation.updateCombination({
+  //     data: updates,
+  //     where: { id: args.id }
+  //   }, info)
 
-    return updatedCombination;
-  },
+  //   return updatedCombination;
+  // },
   deleteCombination: async (parent, args, ctx, info) => {
     const deleteCombination = await ctx.db.mutation.deleteCombination({
       where: { id: args.id }
