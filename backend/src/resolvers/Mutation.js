@@ -55,6 +55,7 @@ const Mutation = {
   },
   createCombination: async (parent, args, ctx, info) => {
 
+    const { name, numTechniques, maxRank, combinationTechniques } = args;
     // map args.techniques to the shape required by createCombination
     const combinationTechniqueMap = (techniques) => {
       return techniques.map((t) => {
@@ -68,13 +69,13 @@ const Mutation = {
       })
     }
 
-    const mappedTechinques = combinationTechniqueMap(args.techniques)
+    const mappedTechinques = combinationTechniqueMap(combinationTechniques)
     
     const combination = await ctx.db.mutation.createCombination({
       data: {
-        name: args.name,
-        numTechniques: args.numTechniques,
-        maxRank: args.maxRank,
+        name,
+        numTechniques,
+        maxRank,
         // populate the array of techniques
         combinationTechniques: {
           create: mappedTechinques 
@@ -86,18 +87,18 @@ const Mutation = {
 
   },
   
-  // updateCombination: async (parent, args, ctx, info) => {
-  //   const updates = {...args};
+  updateCombination: async (parent, args, ctx, info) => {
+    const updates = {...args};
 
-  //   delete updates.id;
+    delete updates.id;
 
-  //   const updatedCombination = await ctx.db.mutation.updateCombination({
-  //     data: updates,
-  //     where: { id: args.id }
-  //   }, info)
+    const updatedCombination = await ctx.db.mutation.updateCombination({
+      data: updates,
+      where: { id: args.id }
+    }, info)
 
-  //   return updatedCombination;
-  // },
+    return updatedCombination;
+  },
   deleteCombination: async (parent, args, ctx, info) => {
     const deleteCombination = await ctx.db.mutation.deleteCombination({
       where: { id: args.id }

@@ -26,7 +26,7 @@ input CombinationTechniqueInput {
 }
 
 type Mutation {
-  createUser(name: String! email: String! combinations: [CombinationInput]): User
+  createUser(name: String! email: String!): User
   updateUser(id: ID! name: String email: String! combinations: [CombinationInput]): User!
   deleteUser(id: ID!): User
   createTechnique(name: String! description: String rank: Rank): Technique
@@ -35,6 +35,12 @@ type Mutation {
   createCombination(
     name: String
     numTechniques: Int
+    maxRank: Rank
+    combinationTechniques: [CombinationTechniqueInput]
+  ): Combination
+  updateCombination(
+    id: ID!
+    name: String
     maxRank: Rank
     combinationTechniques: [CombinationTechniqueInput]
   ): Combination
