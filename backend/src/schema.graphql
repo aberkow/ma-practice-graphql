@@ -22,7 +22,13 @@ input TechniqueInput {
 }
 
 input CombinationTechniqueInput {
+  index: Int!
   technique: TechniqueInput
+}
+
+input CombinationTechniquesListInput {
+  combinationID: CombinationInput
+  techniquesList: [CombinationTechniqueInput]
 }
 
 type Mutation {
@@ -36,14 +42,28 @@ type Mutation {
     name: String
     numTechniques: Int
     maxRank: Rank
-    combinationTechniques: [CombinationTechniqueInput]
+    combinationTechniques: CombinationTechniquesListInput
   ): Combination
+
   updateCombination(
     id: ID!
     name: String
     maxRank: Rank
-    combinationTechniques: [CombinationTechniqueInput]
+    combinationTechniques: CombinationTechniquesListInput
   ): Combination
+
+  # createCombination(
+  #   name: String
+  #   numTechniques: Int
+  #   maxRank: Rank
+  #   combinationTechniques: [CombinationTechniqueInput]
+  # ): Combination
+  # updateCombination(
+  #   id: ID!
+  #   name: String
+  #   maxRank: Rank
+  #   combinationTechniques: [CombinationTechniqueInput]
+  # ): Combination
 
   deleteCombination(id: ID!): Combination
 }

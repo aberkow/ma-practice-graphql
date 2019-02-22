@@ -52,10 +52,19 @@ type Technique {
 # is there a way to re-use them?
 type CombinationTechnique {
   id: ID! @unique
+  index: Int!
   technique: Technique
   createdAt: DateTime!
   updatedAt: DateTime!
 }
+
+type CombinationTechniquesList {
+  id: ID! @unique
+  techniquesList: [CombinationTechnique!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 
 # A collection of techniques defined by a single CombinationTechnique
 # IDs are passed to the technique property to `connect`/define the appropriate technique to use
@@ -64,7 +73,8 @@ type Combination {
   name: String! @default(value: "Untitled")
   numTechniques: Int @default(value: "1")
   maxRank: Rank! @default(value: "NONE")
-  combinationTechniques: [CombinationTechnique!]!
+  # combinationTechniques: [CombinationTechnique!]!
+  combinationTechniques: CombinationTechniquesList
   createdAt: DateTime!
   updatedAt: DateTime!
 }

@@ -54,12 +54,17 @@ const Mutation = {
     }, info)
   },
   createCombination: async (parent, args, ctx, info) => {
-
+    
     const { name, numTechniques, maxRank, combinationTechniques } = args;
+    
+    // console.log(JSON.stringify(args, null, '\t'));
+
+
     // map args.techniques to the shape required by createCombination
     const combinationTechniqueMap = (techniques) => {
       return techniques.map((t) => {
         return {
+          index: t.index,
           technique: {
             connect: {
               id: t.technique.id
@@ -69,16 +74,19 @@ const Mutation = {
       })
     }
 
-    const mappedTechinques = combinationTechniqueMap(combinationTechniques)
+    const mappedTechinques = combinationTechniqueMap(combinationTechniques.techniquesList)
     
     const combination = await ctx.db.mutation.createCombination({
       data: {
         name,
         numTechniques,
         maxRank,
-        // populate the array of techniques
         combinationTechniques: {
-          create: mappedTechinques 
+          create: {
+            techniquesList: {
+              create: mappedTechinques
+            }
+          }
         }
       }
     }, info);
@@ -88,17 +96,36 @@ const Mutation = {
   },
   
   updateCombination: async (parent, args, ctx, info) => {
-    const updates = {...args};
+    const updates = {...args}
 
     delete updates.id;
+
+    console.log(JSON.stringify(args, null, '\t'));
 
     const updatedCombination = await ctx.db.mutation.updateCombination({
       data: updates,
       where: { id: args.id }
     }, info)
 
-    return updatedCombination;
+
+    return updatedCombination
   },
+
+  // updateCombinationOld: async (parent, args, ctx, info) => {
+  //   const updates = {...args};
+
+  //   delete updates.id;
+
+
+  //   console.log(JSON.stringify(combination, null, '\t'));
+
+  //   const updatedCombination = await ctx.db.mutation.updateCombination({
+  //     data: updates,
+  //     where: { id: args.id }
+  //   }, info)
+
+  //   return updatedCombination;
+  // },
   deleteCombination: async (parent, args, ctx, info) => {
     const deleteCombination = await ctx.db.mutation.deleteCombination({
       where: { id: args.id }
